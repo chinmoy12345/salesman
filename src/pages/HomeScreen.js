@@ -8,7 +8,7 @@ export default class HomeScreen extends React.Component {
 		super(props);
 		this.state = {
 			selectAll: false,
-			cartItemsIsLoading: false,
+			cartItemsIsLoading: true,
 			cartItems: [
 				
 			],
@@ -21,8 +21,22 @@ export default class HomeScreen extends React.Component {
 	}
 
 
+	 
+
+
 	 async componentDidMount() {
-		this.getData();
+		let unsubscribe = this.props.navigation.addListener('focus', () => {
+			//alert("ok..");
+			this.getData();
+			/// Do whatever you want
+		  });
+		  unsubscribe;
+		
+		if(unsubscribe)
+		{
+			this.getData();
+		}
+		
 	  }
 
 	  getData = async () => {
@@ -30,6 +44,8 @@ export default class HomeScreen extends React.Component {
 		
 		this.setState({ cartItems: reps.data.data });
 		this.setState({ productFilter: reps.data.data });
+		this.setState({ cartItemsIsLoading:false });
+		
 	  }
 
 
@@ -92,6 +108,29 @@ export default class HomeScreen extends React.Component {
 			productFilterIttms[index]['qty'] = currentQtyPf + 1;
 		} else if(action == 'less'){
 			productFilterIttms[index]['qty'] = currentQtyPf > 1 ? currentQtyPf - 1 : 1;
+		}
+
+		if(productFilterIttms[index]['qtySet'].length>0)
+		{
+			let i=0;
+			let lowestQty=0;
+			for(i;i<productFilterIttms[index]['qtySet'].length;i++)
+			{
+				//alert(productFilterIttms[index]['qtySet'][i])
+				if(productFilterIttms[index]['qtySet'][i]<=productFilterIttms[index]['qty'])
+				{
+					lowestQty=productFilterIttms[index]['qtySet'][i];
+				}
+			}
+			if(lowestQty)
+			{
+				//alert(productFilterIttms[index]['qtyPriceSet'][lowestQty]);
+				productFilterIttms[index]['salePrice'] = productFilterIttms[index]['qtyPriceSet'][lowestQty];
+			}
+			else
+			{
+				productFilterIttms[index]['salePrice'] = productFilterIttms[index]['duPrice'];
+			}
 		}
 		this.setState({ productFilter: productFilterIttms }); // set new state
 
@@ -204,7 +243,13 @@ export default class HomeScreen extends React.Component {
 									<View style={{flexGrow: 1, flexShrink: 1, alignSelf: 'center'}}>
 										<Text numberOfLines={1} style={{fontSize: 15}}>{item.name}</Text>
 										<Text numberOfLines={1} style={{color: '#8f8f8f'}}>{item.color ? 'Variation: ' + item.color : ''}</Text>
-                    <Text numberOfLines={1} style={{color: '#333333', marginBottom: 10}}>${item.qty * item.salePrice}</Text>
+
+										<Text numberOfLines={1} style={{color: '#8f8f8f'}}>{item.option ? 'Option: ' + item.option : ''}</Text>
+
+										
+                   
+				   
+				    <Text numberOfLines={1} style={{color: '#333333', marginBottom: 10}}>${item.qty * item.salePrice}</Text>
 										<View style={{flexDirection: 'row'}}>
 											<TouchableOpacity onPress={() => this.quantityHandler('less', i)} style={{ borderWidth: 1, borderColor: '#cccccc' }}>
 												<MaterialIcons name="remove" size={22} color="#cccccc" />

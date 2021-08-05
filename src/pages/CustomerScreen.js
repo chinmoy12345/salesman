@@ -58,10 +58,13 @@ export default function CustomerScreen({ navigation }) {
       return
     }
 
-    const jsonValue = await AsyncStorage.getItem('@cartSessionData')
+    const jsonValue = await AsyncStorage.getItem('@cartSessionData');
    // alert(jsonValue);
+   const userSessionData = await AsyncStorage.getItem('@userSessionData');
+   let userSesDetails=JSON.parse(userSessionData);
+
     const params = JSON.stringify({
-      "user_id":1,
+      "user_id":userSesDetails.id,
       "customer_name": customerName.value,
       "customer_email": customerEmail.value,
       "customer_phone": customerPhone.value,

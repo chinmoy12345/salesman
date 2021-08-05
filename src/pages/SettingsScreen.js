@@ -33,16 +33,10 @@ const SettingsScreen = ({ route, navigation }) => {
             }}>
             My Account
           </Text>
-
+          
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate('Profile')}>
-            <Text>Profile</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.navigate('Home')}>
+            onPress={() => navigation.navigate('ChangePassword')}>
             <Text>Change Password</Text>
           </TouchableOpacity>
 

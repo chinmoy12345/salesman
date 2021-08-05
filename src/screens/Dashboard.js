@@ -1,5 +1,6 @@
 // React Native Bottom Navigation
 // https://aboutreact.com/react-native-bottom-navigation/
+//https://aboutreact.com/refresh-previous-screen-react-navigation/
 
 import 'react-native-gesture-handler';
 
@@ -18,6 +19,9 @@ import Products from '../pages/Products';
 import CartScreen from '../pages/CartScreen';
 import CustomerScreen from '../pages/CustomerScreen';
 import OrderSuccess from '../pages/OrderSuccess';
+import MyOrder from '../pages/MyOrder';
+import ChangePassword from '../pages/ChangePassword';
+import MyOrderDetails from '../pages/MyOrderDetails';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -60,6 +64,31 @@ function HomeStack() {
   );
 }
 
+
+function MyOrderStack() {
+  return (
+    <Stack.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        headerStyle: { backgroundColor: '#42f44b' },
+        headerTintColor: '#fff',
+        headerTitleStyle: { fontWeight: 'bold' },
+      }}>
+      <Stack.Screen
+        name="MyOrder"
+        component={MyOrder}
+        options={{ title: 'My Order' }}
+      />
+
+      <Stack.Screen
+        name="MyOrderDetails"
+        component={MyOrderDetails}
+        options={{ title: 'My Order Details' }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 function SettingsStack() {
   return (
     <Stack.Navigator
@@ -78,6 +107,11 @@ function SettingsStack() {
         name="Details"
         component={DetailsScreen}
         options={{ title: 'Details Page' }}
+      />
+       <Stack.Screen
+        name="ChangePassword"
+        component={ChangePassword}
+        options={{ title: 'Change Password' }}
       />
       <Stack.Screen
         name="Profile"
@@ -106,6 +140,21 @@ function Dashboard() {
             ),
           }}
         />
+
+<Tab.Screen
+          name="MyOrderStack"
+          component={MyOrderStack}
+          options={{
+            tabBarLabel: 'My Order',
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="sale"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
+        />
 		
         <Tab.Screen
           name="SettingsStack"
@@ -114,7 +163,7 @@ function Dashboard() {
             tabBarLabel: 'My Account',
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
-                name="cog"
+                name="account"
                 color={color}
                 size={size}
               />
