@@ -1,12 +1,15 @@
 import React, { useState,useEffect } from 'react'
-import { TouchableOpacity,ActivityIndicator,SafeAreaView,Text as TextA, StyleSheet, View,StatusBar ,ScrollView} from 'react-native'
+import { TouchableOpacity,SafeAreaView,Text as TextA, StyleSheet, View,StatusBar ,ScrollView} from 'react-native'
 import { Text } from 'react-native-paper'
 import Background from '../components/Background'
-import Button   from '../components/Button'
+import Logo from '../components/Logo'
+import Header from '../components/Header'
+import Button from '../components/Button'
 import TextInput from '../components/TextInput'
 import { theme } from '../core/theme'
 import { emailValidator } from '../helpers/emailValidator'
 import { nameValidator } from '../helpers/nameValidator'
+import { passwordValidator } from '../helpers/passwordValidator'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
@@ -24,7 +27,6 @@ export default function CustomerScreen({ navigation }) {
   const [checkoutSuccess, setCheckoutSuccess] = useState({ bill_no: '', msg: '' })
   const [placeOrderButtomValue, setPlaceOrderButtomValue] = useState('PLACE ORDER')
   const [selectedItem, setSelectedItem] = useState(null)
-  const [pageActivityLoading, setPageActivityLoading] = useState(true)
   const [customerDataSes, setCustomerDataSes] = useState({
         customer_id: "",
         customer_name: "",
@@ -66,7 +68,6 @@ export default function CustomerScreen({ navigation }) {
   }
 
   const goToCustomerList = async () => {
-    setPageActivityLoading(true);
     setCustomerName({ value: '', error: '' });
     setCustomerEmail({ value:'', error: '' });
     setCustomerPhone({ value: '', error: '' });
@@ -96,9 +97,6 @@ export default function CustomerScreen({ navigation }) {
   useEffect(() => {
     let unmounted = false;
     async function getDataFromApi() {
-
-
-        setPageActivityLoading(false);
         let unsubscribe =navigation.addListener('focus', () => {
             getData();
         });
@@ -120,11 +118,9 @@ export default function CustomerScreen({ navigation }) {
   }, []);
 
   const getData = async () => {
-       
         const customerDetailsSes = await AsyncStorage.getItem('@existingCustomerId');
         if(customerDetailsSes)
         {
-             setPageActivityLoading(true);
             let customerDetailsSesObj=JSON.parse(customerDetailsSes);
 
             setCustomerName({ value: customerDetailsSesObj.customer_name, error: '' });
@@ -138,7 +134,6 @@ export default function CustomerScreen({ navigation }) {
             setCustomerCountry({ value: customerDetailsSesObj.customer_country, error: '' });
 
             setCustomerDataSes(customerDetailsSesObj);
-            setPageActivityLoading(false);
         }
   }
 
@@ -239,21 +234,24 @@ export default function CustomerScreen({ navigation }) {
 
   return (
     <ScrollView style={styles.container}>
-      	<View style={{flex: 1, backgroundColor: '#f6f6f6'}}>
-        {pageActivityLoading ? (
-					<View style={[styles.centerElement, {height: 300}]}>
-						<ActivityIndicator size="large" color="green" />
-					</View>
-				) : (
 		<Background>
+    
+    
+      
+
             <View style={{flexDirection: 'row', justifyContent: 'flex-end', height: 32, paddingRight: 30, alignItems: 'center'}}>
+							
+            
               <View style = {styles.containerButton}>
-                <TouchableOpacity 	onPress={() => newCustomer()}>
-                    <Text style = {styles.textButton}>
-                      New Customer
-                    </Text>
-                </TouchableOpacity>
-              </View>
+         <TouchableOpacity 	onPress={() => newCustomer()}>
+            <Text style = {styles.textButton}>
+               New Customer
+            </Text>
+         </TouchableOpacity>
+      </View>
+
+
+
               <View>
               <TouchableOpacity style={[styles.centerElement, {backgroundColor: '#42f44b', width: 100, height: 25, borderRadius: 5}]} 
 								onPress={() => goToCustomerList()}
@@ -365,8 +363,6 @@ export default function CustomerScreen({ navigation }) {
         {placeOrderButtomValue}
       </Button>
 	  </Background>
-      )}
-      </View>
     </ScrollView> 
   )
 }

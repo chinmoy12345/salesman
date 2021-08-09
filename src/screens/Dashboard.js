@@ -22,6 +22,7 @@ import OrderSuccess from '../pages/OrderSuccess';
 import MyOrder from '../pages/MyOrder';
 import ChangePassword from '../pages/ChangePassword';
 import MyOrderDetails from '../pages/MyOrderDetails';
+import CustomerList from '../pages/CustomerList';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -54,6 +55,11 @@ function HomeStack() {
         name="Cart"
         component={CartScreen}
         options={{ title: 'Cart' }}
+      />
+       <Stack.Screen
+        name="CustomerList"
+        component={CustomerList}
+        options={{ title: 'Customer List' }}
       />
        <Stack.Screen
         name="Customer"

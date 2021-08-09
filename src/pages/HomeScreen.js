@@ -40,11 +40,47 @@ export default class HomeScreen extends React.Component {
 	  }
 
 	  getData = async () => {
-		let reps=await axios.get("https://viewongoingprojects.com/jsd-inv/Webeservices/fetchProductData");
+
+
+
+		var self=this;
+		const userSessionData = await AsyncStorage.getItem('@userSessionData');
+   		let userSesDetails=JSON.parse(userSessionData);
+		const params = JSON.stringify({
+			"user_id": userSesDetails.id
+		});
+
+
 		
-		this.setState({ cartItems: reps.data.data });
-		this.setState({ productFilter: reps.data.data });
-		this.setState({ cartItemsIsLoading:false });
+		axios.post("https://viewongoingprojects.com/jsd-inv/Webeservices/fetchProductData", params,{
+
+			"headers": {
+			"content-type": "application/json",
+			},
+			
+			})
+			.then(function(response) {
+			  if(response.data.success==1)
+			  {
+				self.setState({ cartItems: response.data.data });
+				self.setState({ productFilter: response.data.data });
+				self.setState({ cartItemsIsLoading:false });
+			  }
+			  else
+			  {
+				self.setState({ cartItemsIsLoading:false });
+			  }
+			  
+			}).catch(function(error) {
+				console.log(error);
+			});
+
+
+		//let reps=await axios.get("https://viewongoingprojects.com/jsd-inv/Webeservices/fetchProductData");
+		
+		//this.setState({ cartItems: reps.data.data });
+		//this.setState({ productFilter: reps.data.data });
+		//this.setState({ cartItemsIsLoading:false });
 		
 	  }
 
@@ -166,6 +202,49 @@ export default class HomeScreen extends React.Component {
 		})
 		//alert(JSON.stringify(productsCartData));
 
+			//start cart data update
+			const userSessionData = await AsyncStorage.getItem('@userSessionData');
+			let userSesDetails=JSON.parse(userSessionData);
+		   const params = JSON.stringify({
+			"user_id":userSesDetails.id,
+			"cartItems": productsCartData
+			});
+			
+			axios.post("https://viewongoingprojects.com/jsd-inv/Webeservices/cartUpdate", params,{
+	  
+			  "headers": {
+			  "content-type": "application/json",
+			  },
+			  
+			  })
+			  .then(function(response) {
+			   // alert("ok..");
+			   
+				if(response.data.success==1)
+				{
+					
+				}
+				else
+				{
+				
+				}
+			  }).catch(function(error) {
+			  console.log(error);
+			  });
+			  //start cart data update
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 		let productsSes=await AsyncStorage.setItem('@productSessionData', JSON.stringify(this.state.cartItems));
 
@@ -202,24 +281,19 @@ export default class HomeScreen extends React.Component {
 		
 		return (
 			<View style={{flex: 1, backgroundColor: '#f6f6f6'}}>
-				<View style={{flexDirection: 'row', backgroundColor: '#fff', marginBottom: 10}}>
-					<View style={[styles.centerElement, {width: 50, height: 50}]}>
-						<Ionicons name="ios-cart" size={25} color="#000" />
-					</View>
-					<View style={[styles.centerElement, {height: 50}]}>
-						
-					
-						<TextInput 
-										style={{backgroundColor: '#f0f0f0',width:270, height: 25, borderRadius: 4}} 
+				
+
+
+
+				<View style={[styles.centerElement, {height: 50}]}>
+				<TextInput 
+										style={{backgroundColor: '#f0f0f0',borderColor: '#42f44b',borderWidth: 1,width:"100%", height: 50, borderRadius: 4}}
 										placeholder="Search Product" 
 										onChangeText={text=>{this.searchProduct(text)}}
 										
 										
 									/> 
-					
-					</View>
-				</View>
-
+</View>
 				
 				
 				
@@ -249,7 +323,7 @@ export default class HomeScreen extends React.Component {
 										
                    
 				   
-				    <Text numberOfLines={1} style={{color: '#333333', marginBottom: 10}}>${item.qty * item.salePrice}</Text>
+				    <Text numberOfLines={1} style={{color: '#333333', marginBottom: 10}}>₹{item.qty * item.salePrice}</Text>
 										<View style={{flexDirection: 'row'}}>
 											<TouchableOpacity onPress={() => this.quantityHandler('less', i)} style={{ borderWidth: 1, borderColor: '#cccccc' }}>
 												<MaterialIcons name="remove" size={22} color="#cccccc" />
@@ -304,7 +378,7 @@ export default class HomeScreen extends React.Component {
 								<Text></Text>
 								<View style={{flexDirection: 'row', paddingRight: 20, alignItems: 'center'}}>
 									<Text style={{color: '#8f8f8f'}}>SubTotal: </Text>
-									<Text>${this.subtotalPrice().toFixed(2)}</Text>
+									<Text>₹{this.subtotalPrice().toFixed(2)}</Text>
 								</View>
 							</View>
 						</View>

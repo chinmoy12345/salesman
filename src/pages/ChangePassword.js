@@ -36,7 +36,9 @@ export default function ChangePassword({ navigation }) {
      const jsonValue = await AsyncStorage.getItem('@userSessionData');
 
      let userSesDetails=JSON.parse(jsonValue);
-     alert(userSesDetails.id);
+     //alert(userSesDetails.id);
+
+     
      const params = JSON.stringify({
       "user_id":userSesDetails.id,
       "password": password.value
@@ -73,6 +75,8 @@ export default function ChangePassword({ navigation }) {
         }).catch(function(error) {
         console.log(error);
         });
+
+
   }
 
   const passwordCallBack = async (resp) =>

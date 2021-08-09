@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react'
-import { TouchableOpacity,SafeAreaView, StyleSheet, View,StatusBar ,ScrollView} from 'react-native'
+import { TouchableOpacity,SafeAreaView, StyleSheet, View,StatusBar ,ScrollView,ActivityIndicator} from 'react-native'
 import { Text } from 'react-native-paper'
 import Background from '../components/Background'
 import Logo from '../components/Logo'
@@ -15,11 +15,13 @@ import axios from 'axios';
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState({ value: '', error: '' })
+
+  
   const [password, setPassword] = useState({ value: '', error: '' })
   const [userSesData, setUserSesData] = useState({})
   const [loginButtonValue, setLoginButtonValue] = useState('Login')
   const [loginAuthError, setLoginAuthError] = useState('')
-  
+  const [pageActivityLoading, setPageActivityLoading] = useState(true)
   useEffect(() => {
     async function fetchMyAPI() {
 
@@ -32,7 +34,10 @@ export default function LoginScreen({ navigation }) {
           routes: [{ name: 'Dashboard' }],
         })
       }
-     
+      else
+      {
+        setPageActivityLoading(false);
+      }
     }
 
     fetchMyAPI()
@@ -53,7 +58,6 @@ export default function LoginScreen({ navigation }) {
       "password": password.value,
       });
       setLoginButtonValue('Login...');
-
 
 
       axios.post("https://viewongoingprojects.com/jsd-inv/Webeservices/login", params,{
@@ -104,6 +108,12 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
+
+      {pageActivityLoading ? (
+					<View style={[styles.centerElement, {height: 300}]}>
+						<ActivityIndicator size="large" color="green" />
+					</View>
+				) : (
     <Background>
       
       <Logo />
@@ -143,6 +153,7 @@ export default function LoginScreen({ navigation }) {
       </Button>
      
     </Background>
+    )}
     </SafeAreaView>
     
     

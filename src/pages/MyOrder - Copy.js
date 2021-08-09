@@ -21,10 +21,8 @@ export default class HomeScreen extends React.Component {
 
 	   getData = async () => {
 		var self=this;
-		const userSessionData = await AsyncStorage.getItem('@userSessionData');
-   		let userSesDetails=JSON.parse(userSessionData);
 		const params = JSON.stringify({
-			"user_id": userSesDetails.id
+			"user_id": '1'
 		});
 
 
@@ -47,7 +45,7 @@ export default class HomeScreen extends React.Component {
 			  }
 			  else
 			  {
-				self.setState({pageActivityLoading:false});
+			
 			  }
 			  
 			}).catch(function(error) {

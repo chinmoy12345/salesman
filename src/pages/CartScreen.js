@@ -2,12 +2,13 @@ import React,{ useState, useEffect } from 'react';
 import { StyleSheet, Button, Text, View, TouchableOpacity, ScrollView, Image, ActivityIndicator, TextInput, Alert } from 'react-native';
 import { MaterialIcons, AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 export default class CartScreen extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
 			selectAll: false,
-			cartItemsIsLoading: false,
+			cartItemsIsLoading: true,
 			cartItems: [
 				/* Sample data from walmart */
 				/*{itemId: "501436323", name: "Power Wheels Dune Racer Extreme", thumbnailImage: "https://i5.walmartimages.com/asr/a3922e8e-2128-4603-ba8c-b58d1333253b_1.44d66337098c1db8fed9abe2ff4b57ce.jpeg?odnHeight=100&odnWidth=100&odnBg=FFFFFF", color: "Red", qty: 1, salePrice: "105", checked: 1},
@@ -33,8 +34,12 @@ export default class CartScreen extends React.Component {
 		this.setState({ cartItems: newItems, selectAll: (value == true ? false : true) }); // set new state
 	}
 	
-	deleteHandler = (index) => {
-		Alert.alert(
+	deleteHandler = (index,cart_id) => {
+
+
+
+
+	Alert.alert(
 			'Are you sure you want to delete this item from your cart?',
 			'',
 			[
@@ -43,6 +48,10 @@ export default class CartScreen extends React.Component {
 					let updatedCart = this.state.cartItems; /* Clone it first */
 					updatedCart.splice(index, 1); /* Remove item from the cloned cart state */
 					this.setState(updatedCart); /* Update the state */
+					this.getCartDataDelete(cart_id);
+
+
+
 				}},
 			],
 			{ cancelable: false }
@@ -72,21 +81,77 @@ export default class CartScreen extends React.Component {
 	}
 
 
+	getCartDataDelete = async (cart_id) => {
+
+		alert(cart_id);
+		var self=this;
+		const userSessionData = await AsyncStorage.getItem('@userSessionData');
+   		let userSesDetails=JSON.parse(userSessionData);
+		const params = JSON.stringify({
+			"user_id": userSesDetails.id,
+			"cart_id": cart_id
+		});
+
+		axios.post("https://viewongoingprojects.com/jsd-inv/Webeservices/cartDelete", params,{
+
+			"headers": {
+			"content-type": "application/json",
+			},
+			
+			})
+			.then(function(response) {
+			  if(response.data.success==1)
+			  {
+				 
+				//self.setState({ cartItems: response.data.data }); 
+				//self.setState({ cartItemsIsLoading:false });
+			  }
+			  else
+			  {
+				//self.setState({ cartItemsIsLoading:false });
+			  }
+			  
+			}).catch(function(error) {
+				console.log(error);
+			});
+	  }
+
 	getData = async () => {
-		try {
-		  const jsonValue = await AsyncStorage.getItem('@cartSessionData')
-		  //alert(jsonValue);
-		  this.setState({ cartItems: JSON.parse(jsonValue) }); 
-		 // this.props.navigation.navigate('HomeStack', { screen: 'Customer' })
-		  return jsonValue != null ? JSON.parse(jsonValue) : null;
-		  
-		} catch(e) {
-			console.log(e);
-		}
+
+		var self=this;
+		const userSessionData = await AsyncStorage.getItem('@userSessionData');
+   		let userSesDetails=JSON.parse(userSessionData);
+		const params = JSON.stringify({
+			"user_id": userSesDetails.id
+		});
+
+		axios.post("https://viewongoingprojects.com/jsd-inv/Webeservices/cartList", params,{
+
+			"headers": {
+			"content-type": "application/json",
+			},
+			
+			})
+			.then(function(response) {
+			  if(response.data.success==1)
+			  {
+				self.setState({ cartItems: response.data.data }); 
+				self.setState({ cartItemsIsLoading:false });
+			  }
+			  else
+			  {
+				self.setState({ cartItemsIsLoading:false });
+			  }
+			  
+			}).catch(function(error) {
+				console.log(error);
+			});
+		
 	  }
 
 
 	  componentDidMount() {
+		  
 		this.getData();
 	  }
 
@@ -135,7 +200,7 @@ export default class CartScreen extends React.Component {
 						{cartItems && cartItems.map((item, i) => (
 							<View key={i} style={{flexDirection: 'row', backgroundColor: '#fff', marginBottom: 2, height: 120}}>
 								<View style={[styles.centerElement, {width: 60}]}>
-									<TouchableOpacity style={[styles.centerElement, {width: 32, height: 32}]} onPress={() => this.selectHandler(i, item.checked)}>
+									<TouchableOpacity style={[styles.centerElement, {width: 32, height: 32}]} >
 										<Ionicons name={item.checked == 1 ? "ios-checkmark-circle" : "ios-checkmark-circle-outline"} size={25} color={item.checked == 1 ? "#42f44b" : "#42f44b"} />
 									</TouchableOpacity>
 								</View>
@@ -160,7 +225,7 @@ export default class CartScreen extends React.Component {
 									
 								</View>
 								<View style={[styles.centerElement, {width: 60}]}>
-									<TouchableOpacity style={[styles.centerElement, {width: 32, height: 32}]} onPress={() => this.deleteHandler(i)}>
+									<TouchableOpacity style={[styles.centerElement, {width: 32, height: 32}]} onPress={() => this.deleteHandler(i,item.cart_id)}>
 										<Ionicons name="md-trash" size={25} color="#ee4d2d" />
 									</TouchableOpacity>
 								</View>
