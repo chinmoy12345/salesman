@@ -74,18 +74,20 @@ export default class HomeScreen extends React.Component {
 			<View style={{flex: 1, backgroundColor: '#f6f6f6'}}>
 				{pageActivityLoading ? (
 					<View style={[styles.centerElement, {height: 300}]}>
-						<ActivityIndicator size="large" color="green" />
+						<ActivityIndicator size="large" color="#42f44b" />
 					</View>
 				) : (
-					<ScrollView>	
+					<ScrollView>
+						
 						{ordersList && ordersList.map((item, i) => (
-							<View  key={i} style={{flexDirection: 'row', backgroundColor: '#fff', marginBottom: 2, height: 120, paddingLeft:10}}>
+							<View  key={i} style={{flexDirection: 'row', width:"98%", backgroundColor: '#fff', marginBottom: 2, height: 120, paddingLeft:10}}>
 							
 								<View style={{flexDirection: 'row', flexGrow: 1, flexShrink: 1, alignSelf: 'center'}}>
 									
 									<View  style={{flexGrow: 1, flexShrink: 1, alignSelf: 'center'}}>
 								
-										
+									    <Text numberOfLines={1} style={{fontSize: 15}}>Date Order: {item.date_time}</Text>
+									    <Text numberOfLines={1} style={{fontSize: 15}}>Order No: {item.bill_no}</Text>
 										<Text numberOfLines={1} style={{fontSize: 15}}>Customer Name: {item.userName}</Text>
 										<Text numberOfLines={1} style={{fontSize: 15}}>Mobile: {item.userPhone}</Text>
 										<Text numberOfLines={1} style={{fontSize: 15}}>Total Amount: {item.totalOrderAmountWithCurrency}</Text>

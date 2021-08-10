@@ -68,24 +68,28 @@ export default class MyOrderDetails extends React.Component {
 			<View style={{flex: 1, backgroundColor: '#f6f6f6'}}>
 				{pageActivityLoading ? (
 					<View style={[styles.centerElement, {height: 300}]}>
-						<ActivityIndicator size="large" color="green" />
+						<ActivityIndicator size="large" color="#42f44b" />
 					</View>
 				) : (
 					<ScrollView>	
 
 
-						  <View  style={{flexGrow: 1, flexShrink: 1,backgroundColor: '#fff', alignSelf: 'center'}}>
+						  <View  style={{flexGrow: 1,width:"97%", flexShrink: 1,backgroundColor: '#fff', alignSelf: 'center'}}>
 								
-										
+						  <Text numberOfLines={1} style={{fontSize: 20}}>Customer Info:</Text>
+						  <Text numberOfLines={1} style={{fontSize: 17}}>Order No: {ordersDetails.bill_no}</Text>	
+						  <Text numberOfLines={1} style={{fontSize: 17}}>Order Date: {ordersDetails.date_time}</Text>	
 								<Text numberOfLines={1} style={{fontSize: 15}}>Customer Name: {ordersDetails.customer_name}</Text>
 								<Text numberOfLines={1} style={{fontSize: 15}}>Email: {ordersDetails.customer_email}</Text>
 								<Text numberOfLines={1} style={{fontSize: 15}}>Mobile: {ordersDetails.customer_phone}</Text>
+									
+
 								{/*<Text numberOfLines={1} style={{color: '#333333', marginBottom: 10}}>${item.qty * item.salePrice}</Text>*/}
 								
 							</View>
 
 						{ordersDetails.items && ordersDetails.items.map((item, i) => (
-							<View  key={i} style={{flexDirection: 'row', backgroundColor: '#fff', marginBottom: 2, height: 120, paddingLeft:10}}>
+							<View  key={i} style={{flexDirection: 'row', backgroundColor: '#fff', marginBottom: 2, height: 120, paddingLeft:20}}>
 							
 								<View style={{flexDirection: 'row', flexGrow: 1, flexShrink: 1, alignSelf: 'center'}}>
 									
@@ -94,7 +98,7 @@ export default class MyOrderDetails extends React.Component {
 										
 										<Text numberOfLines={1} style={{fontSize: 15}}>Item Name: {item.item_name}</Text>
 										<Text numberOfLines={1} style={{fontSize: 15}}>Qty: {item.qty}</Text>
-										<Text numberOfLines={1} style={{fontSize: 15}}>Total Amount: {item.amount}</Text>
+										<Text numberOfLines={1} style={{fontSize: 15}}>Amount: ₹{item.amount}</Text>
 										{/*<Text numberOfLines={1} style={{color: '#333333', marginBottom: 10}}>${item.qty * item.salePrice}</Text>*/}
 										
 									</View>
@@ -106,7 +110,7 @@ export default class MyOrderDetails extends React.Component {
 						))}
 
 							<View  style={{flexGrow: 1, flexShrink: 1,backgroundColor: '#fff', alignSelf: 'center'}}>
-								<Text numberOfLines={1} style={{fontSize: 15}}>Total Amount: {ordersDetails.net_amount}</Text>
+								<Text numberOfLines={1} style={{fontSize: 17}}>Total Amount: ₹{ordersDetails.net_amount}</Text>
 								{/*<Text numberOfLines={1} style={{color: '#333333', marginBottom: 10}}>${item.qty * item.salePrice}</Text>*/}
 								
 							</View>

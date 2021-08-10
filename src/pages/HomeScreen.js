@@ -299,7 +299,7 @@ export default class HomeScreen extends React.Component {
 				
 				{cartItemsIsLoading ? (
 					<View style={[styles.centerElement, {height: 300}]}>
-						<ActivityIndicator size="large" color="#ef5739" />
+						<ActivityIndicator size="large" color="#42f44b" />
 					</View>
 				) : (
 					<ScrollView>	

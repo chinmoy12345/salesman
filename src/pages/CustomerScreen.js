@@ -1,8 +1,8 @@
 import React, { useState,useEffect } from 'react'
 import { TouchableOpacity,ActivityIndicator,SafeAreaView,Text as TextA, StyleSheet, View,StatusBar ,ScrollView} from 'react-native'
 import { Text } from 'react-native-paper'
-import Background from '../components/Background'
-import Button   from '../components/Button'
+import Background from '../components/Background';
+import Button   from '../components/Button';
 import TextInput from '../components/TextInput'
 import { theme } from '../core/theme'
 import { emailValidator } from '../helpers/emailValidator'
@@ -241,32 +241,33 @@ export default function CustomerScreen({ navigation }) {
     <ScrollView style={styles.container}>
       	<View style={{flex: 1, backgroundColor: '#f6f6f6'}}>
         {pageActivityLoading ? (
-					<View style={[styles.centerElement, {height: 300}]}>
-						<ActivityIndicator size="large" color="green" />
+					<View style={[styles.centerElement, {height: "100%"}]}>
+						<ActivityIndicator size="large" color="#42f44b" />
 					</View>
 				) : (
-		<Background>
-            <View style={{flexDirection: 'row', justifyContent: 'flex-end', height: 32, paddingRight: 30, alignItems: 'center'}}>
-              <View style = {styles.containerButton}>
-                <TouchableOpacity 	onPress={() => newCustomer()}>
+          <View style={{width: "90%",paddingLeft: 31, alignItems: 'center'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'flex-end', height: 32, paddingRight: 15, alignItems: 'center'}}>
+             
+                <TouchableOpacity style = {styles.containerButton} 	onPress={() => newCustomer()}>
                     <Text style = {styles.textButton}>
                       New Customer
                     </Text>
                 </TouchableOpacity>
-              </View>
-              <View>
-              <TouchableOpacity style={[styles.centerElement, {backgroundColor: '#42f44b', width: 100, height: 25, borderRadius: 5}]} 
+            
+
+             
+              <TouchableOpacity style = {styles.containerButton}
 								onPress={() => goToCustomerList()}
 						
 							>
-								<TextA style={{color: '#ffffff'}}>Existing Customer</TextA>
+								<Text style = {styles.textButton}>Existing Customer</Text>
 							</TouchableOpacity>
-             </View>
+            
 						</View>
 
            
            
-     
+            <View style={{width:"100%",paddingTop: 31, alignItems: 'center'}}> 
       <TextInput
         label="Name"
         returnKeyType="next"
@@ -276,8 +277,9 @@ export default function CustomerScreen({ navigation }) {
         errorText={customerName.error}
         autoCapitalize="none"
       />
+     
 
-<TextInput
+    <TextInput
         label="Email"
         returnKeyType="next"
         value={customerEmail.value}
@@ -290,7 +292,7 @@ export default function CustomerScreen({ navigation }) {
         keyboardType="email-address"
       />
 
-<TextInput
+      <TextInput
         label="Mobile"
         returnKeyType="next"
         value={customerPhone.value}
@@ -309,9 +311,7 @@ export default function CustomerScreen({ navigation }) {
         
       />
 
-
-	  
-<TextInput
+      <TextInput
         label="Address line 1"
         returnKeyType="next"
         value={customerAddress.value}
@@ -321,7 +321,7 @@ export default function CustomerScreen({ navigation }) {
       
       />
 
-<TextInput
+      <TextInput
         label="Address line 2 (optional)"
         returnKeyType="next"
         value={customerAddressLine2.value}
@@ -331,7 +331,7 @@ export default function CustomerScreen({ navigation }) {
       
       />
 
-<TextInput
+      <TextInput
         label="State"
         returnKeyType="next"
         value={customerState.value}
@@ -341,7 +341,7 @@ export default function CustomerScreen({ navigation }) {
         
       />
 
-<TextInput
+    <TextInput
         label="City"
         returnKeyType="next"
         value={customerCiy.value}
@@ -351,20 +351,20 @@ export default function CustomerScreen({ navigation }) {
       
       />
 
-<TextInput
+      <TextInput
         label="Country"
         returnKeyType="next"
         value={customerCountry.value}
         onChangeText={(text) => setCustomerCountry({ value: text, error: '' })}
         error={!!customerCountry.error}
         errorText={customerCountry.error}
-      
       />
 
-      <Button mode="contained" onPress={onCheckoutPressed}>
+      <Button mode="contained" style={{backgroundColor: '#42f44b'}} onPress={onCheckoutPressed}>
         {placeOrderButtomValue}
       </Button>
-	  </Background>
+      </View>
+     </View>
       )}
       </View>
     </ScrollView> 
@@ -374,7 +374,7 @@ export default function CustomerScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
 	flex: 1,
-	marginTop: StatusBar.currentHeight || 0,
+	marginTop:10,
   },
   forgotPassword: {
     width: '100%',
@@ -403,12 +403,19 @@ const styles = StyleSheet.create({
   },
   containerButton: {
     alignItems: 'center',
-   
+    margin:10,
+    height:20,
+    
  },
  textButton: {
     borderWidth: 2,
-    padding: 25,
-    borderColor: 'black',
-    backgroundColor: 'red'
+    alignItems: 'center',
+    color: theme.colors.primary,
+    borderColor: '#42f44b',
+    backgroundColor: '#42f44b',
+    color:'#ffffff',
+    padding:10,
+    
+   
  }
 })
