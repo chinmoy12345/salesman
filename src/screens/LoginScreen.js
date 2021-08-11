@@ -11,6 +11,8 @@ import { emailValidator } from '../helpers/emailValidator'
 import { passwordValidator } from '../helpers/passwordValidator'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+const STYLES = ['default', 'dark-content', 'light-content'];
+const TRANSITIONS = ['fade', 'slide', 'none'];
 
 
 export default function LoginScreen({ navigation }) {
@@ -22,6 +24,14 @@ export default function LoginScreen({ navigation }) {
   const [loginButtonValue, setLoginButtonValue] = useState('Login')
   const [loginAuthError, setLoginAuthError] = useState('')
   const [pageActivityLoading, setPageActivityLoading] = useState(true)
+
+
+  const [hidden, setHidden] = useState(false);
+  const [statusBarStyle, setStatusBarStyle] = useState(STYLES[0]);
+  const [statusBarTransition, setStatusBarTransition] = useState(TRANSITIONS[0]);
+  const changeStatusBarVisibility = () => setHidden(!hidden);
+
+
   useEffect(() => {
     async function fetchMyAPI() {
 
@@ -108,16 +118,39 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
+      
 
+{/*<StatusBar
+        animated={true}
+        backgroundColor="#42f44b"
+        barStyle={statusBarStyle}
+        showHideTransition={statusBarTransition}
+hidden={hidden} /> */}
+  {!pageActivityLoading ? (
+    <>
+<View style={{width:"100%",height:85,backgroundColor: '#42f44b'}}>
+<Text style={{ color: 'white',paddingLeft:10,paddingTop:38,fontSize:25,alignItems: 'center'}}>Login</Text>
+       </View>
+       </>
+       ):( <></>)}
+     
+       <ScrollView style={styles.scrollView}>
+      
+
+        
+      
+      
+      
+<View style={{width:"100%",height:"100%", alignItems: 'center'}}>
       {pageActivityLoading ? (
-					<View style={[styles.centerElement, {height: 300}]}>
-						<ActivityIndicator size="large" color="green" />
+					<View style={[styles.centerElement, {height: 300,paddingTop:"50%"}]}>
+						<ActivityIndicator size="large" color="#42f44b" />
 					</View>
 				) : (
-    <Background>
+    <View style={{width:"70%",paddingTop: "30%", alignItems: 'center'}}>
       
-      <Logo />
-      <Header>Welcome back.</Header>
+     
+      <Header>LOGIN</Header>
       <TextInput
         label="Email"
         returnKeyType="next"
@@ -137,6 +170,7 @@ export default function LoginScreen({ navigation }) {
         onChangeText={(text) => setPassword({ value: text, error: '' })}
         error={!!password.error}
         errorText={password.error}
+        color="#42f44b"
         secureTextEntry
       />
       
@@ -148,14 +182,18 @@ export default function LoginScreen({ navigation }) {
         </TouchableOpacity>
       </View>
       <Text style={styles.forgot}>{loginAuthError}</Text>
-      <Button mode="contained" onPress={onLoginPressed}>
-        {loginButtonValue}
+      <Button mode="contained" color="#42f44b"  onPress={onLoginPressed}>
+        <Text  style={{ color: 'white'}}>{loginButtonValue}</Text>
       </Button>
      
-    </Background>
+    </View>
     )}
+    </View>
+   
+   
+    </ScrollView>
+   
     </SafeAreaView>
-    
     
   )
 }
@@ -163,8 +201,11 @@ export default function LoginScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 2,
-    paddingTop: StatusBar.currentHeight,
-    marginHorizontal: 0
+    /*paddingTop: StatusBar.currentHeight,*/
+    paddingTop: 0,
+    marginHorizontal: 0,
+  
+   
   },
   forgotPassword: {
     width: '100%',
@@ -174,6 +215,10 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     marginTop: 4,
+  },
+  scrollView: {
+    backgroundColor: 'white',
+    /*marginHorizontal: 20,*/
   },
   forgot: {
     fontSize: 13,

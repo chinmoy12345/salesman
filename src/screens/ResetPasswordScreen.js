@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import Background from '../components/Background'
 import BackButton from '../components/BackButton'
+
 import Logo from '../components/Logo'
 import Header from '../components/Header'
 import TextInput from '../components/TextInput'
 import Button from '../components/Button'
 import { emailValidator } from '../helpers/emailValidator'
-import { StyleSheet,StatusBar} from 'react-native'
+import { ScrollView,SafeAreaView,StyleSheet,StatusBar,View} from 'react-native'
 import { Text} from 'react-native-paper'
 import axios from 'axios';
 
@@ -57,9 +58,16 @@ export default function ResetPasswordScreen({ navigation }) {
   }
 
   return (
-    <Background>
-      <BackButton goBack={navigation.goBack} />
-      <Logo />
+    <SafeAreaView style={styles.container}>
+       <ScrollView style={styles.scrollView}>
+     
+      <View style={{width:"100%",height:85,backgroundColor: '#42f44b'}}>
+<Text style={{ color: 'white',paddingLeft:30,paddingTop:36,fontSize:25,alignItems: 'center'}}> Restore Password</Text>
+       </View>
+     
+       <BackButton goBack={navigation.goBack} />
+      <View style={{width:"100%", alignItems: 'center'}}>
+      <View style={{width:"70%",paddingTop: "30%", alignItems: 'center'}}>
       <Header>Restore Password</Header>
       <TextInput
         label="E-mail address"
@@ -81,10 +89,13 @@ export default function ResetPasswordScreen({ navigation }) {
         onPress={sendResetPasswordEmail}
         style={{ marginTop: 16 }}
       >
-       {sendingInstruction}
+       <Text style={{ color: 'white'}}>{sendingInstruction}</Text>
       </Button>
       <Text style={styles.forgot}>{resetPasswordError}</Text>
-    </Background>
+      </View>
+      </View>
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 
@@ -92,7 +103,11 @@ export default function ResetPasswordScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
 	flex: 1,
-	marginTop: StatusBar.currentHeight || 0,
+  /*	marginTop: StatusBar.currentHeight || 0,*/
+  },
+  scrollView: {
+    backgroundColor: 'white',
+    /*marginHorizontal: 20,*/
   }
   
 })

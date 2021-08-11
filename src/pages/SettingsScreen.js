@@ -14,7 +14,12 @@ const SettingsScreen = ({ route, navigation }) => {
 
   const logout = async () => {
     AsyncStorage.clear();
-    navigation.navigate('LoginScreen')
+   // navigation.navigate('LoginScreen');
+   
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'LoginScreen' }],
+    })
   }
   return (
     <SafeAreaView style={{ flex: 1 }}>

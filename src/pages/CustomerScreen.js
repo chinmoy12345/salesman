@@ -41,6 +41,7 @@ export default function CustomerScreen({ navigation }) {
 
 
   const newCustomer = async () => {
+    setPageActivityLoading(true);
     await AsyncStorage.setItem('@existingCustomerId', JSON.stringify({}));
     setCustomerDataSes({
       customer_id: "",
@@ -63,10 +64,11 @@ export default function CustomerScreen({ navigation }) {
     setCustomerState({ value: '', error: '' });
     setCustomerCiy({ value: '', error: '' });
     setCustomerCountry({ value: '', error: '' });
+    setPageActivityLoading(false);
   }
 
   const goToCustomerList = async () => {
-    setPageActivityLoading(true);
+   // setPageActivityLoading(true);
     setCustomerName({ value: '', error: '' });
     setCustomerEmail({ value:'', error: '' });
     setCustomerPhone({ value: '', error: '' });
@@ -238,14 +240,16 @@ export default function CustomerScreen({ navigation }) {
   }
 
   return (
-    <ScrollView style={styles.container}>
-      	<View style={{flex: 1, backgroundColor: '#f6f6f6'}}>
+    <SafeAreaView style={styles.container}>
+        <ScrollView style={styles.scrollView}>
+    
+      	<View style={{width:"100%",height:"100%", alignItems: 'center',  backgroundColor: 'white'}}>
         {pageActivityLoading ? (
-					<View style={[styles.centerElement, {height: "100%"}]}>
+					<View style={[styles.centerElement, {height: 300,paddingTop:"50%"}]}>
 						<ActivityIndicator size="large" color="#42f44b" />
 					</View>
 				) : (
-          <View style={{width: "90%",paddingLeft: 31, alignItems: 'center'}}>
+          <View style={{width: "80%", alignItems: 'center'}}>
             <View style={{flexDirection: 'row', justifyContent: 'flex-end', height: 32, paddingRight: 15, alignItems: 'center'}}>
              
                 <TouchableOpacity style = {styles.containerButton} 	onPress={() => newCustomer()}>
@@ -361,20 +365,22 @@ export default function CustomerScreen({ navigation }) {
       />
 
       <Button mode="contained" style={{backgroundColor: '#42f44b'}} onPress={onCheckoutPressed}>
-        {placeOrderButtomValue}
+      
+        <Text  style={{ color: 'white'}}>{placeOrderButtomValue}</Text>
       </Button>
       </View>
      </View>
       )}
       </View>
-    </ScrollView> 
+      </ScrollView>
+    </SafeAreaView> 
   )
 }
 
 const styles = StyleSheet.create({
   container: {
 	flex: 1,
-	marginTop:10,
+	marginTop:0,
   },
   forgotPassword: {
     width: '100%',
@@ -407,6 +413,10 @@ const styles = StyleSheet.create({
     height:20,
     
  },
+ scrollView: {
+  backgroundColor: 'white',
+  /*marginHorizontal: 20,*/
+},
  textButton: {
     borderWidth: 2,
     alignItems: 'center',
